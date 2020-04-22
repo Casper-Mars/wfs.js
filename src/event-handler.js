@@ -47,6 +47,7 @@ class EventHandler {
    * arguments: event (string), data (any)
    */
   onEvent(event, data) {
+
     this.onEventGeneric(event, data);
   }
 

@@ -540,7 +540,7 @@ exports.default = BufferController;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -564,93 +564,93 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
 var FlowController = function (_EventHandler) {
-  _inherits(FlowController, _EventHandler);
+    _inherits(FlowController, _EventHandler);
 
-  function FlowController(wfs) {
-    _classCallCheck(this, FlowController);
+    function FlowController(wfs) {
+        _classCallCheck(this, FlowController);
 
-    var _this = _possibleConstructorReturn(this, (FlowController.__proto__ || Object.getPrototypeOf(FlowController)).call(this, wfs, _events2.default.MEDIA_ATTACHED, _events2.default.BUFFER_CREATED, _events2.default.FILE_PARSING_DATA, _events2.default.FILE_HEAD_LOADED, _events2.default.FILE_DATA_LOADED, _events2.default.WEBSOCKET_ATTACHED, _events2.default.FRAG_PARSING_DATA, _events2.default.FRAG_PARSING_INIT_SEGMENT));
+        var _this = _possibleConstructorReturn(this, (FlowController.__proto__ || Object.getPrototypeOf(FlowController)).call(this, wfs, _events2.default.MEDIA_ATTACHED, _events2.default.BUFFER_CREATED, _events2.default.FILE_PARSING_DATA, _events2.default.FILE_HEAD_LOADED, _events2.default.FILE_DATA_LOADED, _events2.default.WEBSOCKET_ATTACHED, _events2.default.FRAG_PARSING_DATA, _events2.default.FRAG_PARSING_INIT_SEGMENT));
 
-    _this.fileStart = 0;
-    _this.fileEnd = 0;
-    _this.pendingAppending = 0;
-    _this.mediaType = undefined;
-    channelName: _this.channelName;
-    return _this;
-  }
-
-  _createClass(FlowController, [{
-    key: 'destroy',
-    value: function destroy() {
-      _eventHandler2.default.prototype.destroy.call(this);
+        _this.fileStart = 0;
+        _this.fileEnd = 0;
+        _this.pendingAppending = 0;
+        _this.mediaType = undefined;
+        channelName: _this.channelName;
+        return _this;
     }
-  }, {
-    key: 'onMediaAttached',
-    value: function onMediaAttached(data) {
-      if (data.websocketName != undefined) {
-        var client = new WebSocket('ws://' + window.location.host + '/' + data.websocketName);
-        this.wfs.attachWebsocket(client, data.channelName);
-      } else {
-        console.log('websocketName ERROE!!!');
-      }
-    }
-  }, {
-    key: 'onBufferCreated',
-    value: function onBufferCreated(data) {
-      this.mediaType = data.mediaType;
-    }
-  }, {
-    key: 'onFileHeadLoaded',
-    value: function onFileHeadLoaded(data) {}
-  }, {
-    key: 'onFileDataLoaded',
-    value: function onFileDataLoaded(data) {}
-  }, {
-    key: 'onFileParsingData',
-    value: function onFileParsingData(data) {}
-  }, {
-    key: 'onWebsocketAttached',
-    value: function onWebsocketAttached(data) {
-      this.wfs.trigger(_events2.default.BUFFER_APPENDING, { type: 'video', data: data.payload, parent: 'main' });
-    }
-  }, {
-    key: 'onFragParsingInitSegment',
-    value: function onFragParsingInitSegment(data) {
-      var tracks = data.tracks,
-          trackName,
-          track;
 
-      track = tracks.video;
-      if (track) {
-        track.id = data.id;
-      }
-
-      for (trackName in tracks) {
-        track = tracks[trackName];
-        var initSegment = track.initSegment;
-        if (initSegment) {
-          this.pendingAppending++;
-          this.wfs.trigger(_events2.default.BUFFER_APPENDING, { type: trackName, data: initSegment, parent: 'main' });
+    _createClass(FlowController, [{
+        key: 'destroy',
+        value: function destroy() {
+            _eventHandler2.default.prototype.destroy.call(this);
         }
-      }
-    }
-  }, {
-    key: 'onFragParsingData',
-    value: function onFragParsingData(data) {
-      var _this2 = this;
-
-      if (data.type === 'video') {}
-
-      [data.data1, data.data2].forEach(function (buffer) {
-        if (buffer) {
-          _this2.pendingAppending++;
-          _this2.wfs.trigger(_events2.default.BUFFER_APPENDING, { type: data.type, data: buffer, parent: 'main' });
+    }, {
+        key: 'onMediaAttached',
+        value: function onMediaAttached(data) {
+            if (data.websocketName !== undefined && data.host !== undefined) {
+                var client = new WebSocket('ws://' + data.host + '/' + data.websocketName);
+                this.wfs.attachWebsocket(client, data.channelName);
+            } else {
+                console.log('websocketName ERROE!!!');
+            }
         }
-      });
-    }
-  }]);
+    }, {
+        key: 'onBufferCreated',
+        value: function onBufferCreated(data) {
+            this.mediaType = data.mediaType;
+        }
+    }, {
+        key: 'onFileHeadLoaded',
+        value: function onFileHeadLoaded(data) {}
+    }, {
+        key: 'onFileDataLoaded',
+        value: function onFileDataLoaded(data) {}
+    }, {
+        key: 'onFileParsingData',
+        value: function onFileParsingData(data) {}
+    }, {
+        key: 'onWebsocketAttached',
+        value: function onWebsocketAttached(data) {
+            this.wfs.trigger(_events2.default.BUFFER_APPENDING, { type: 'video', data: data.payload, parent: 'main' });
+        }
+    }, {
+        key: 'onFragParsingInitSegment',
+        value: function onFragParsingInitSegment(data) {
+            var tracks = data.tracks,
+                trackName,
+                track;
 
-  return FlowController;
+            track = tracks.video;
+            if (track) {
+                track.id = data.id;
+            }
+
+            for (trackName in tracks) {
+                track = tracks[trackName];
+                var initSegment = track.initSegment;
+                if (initSegment) {
+                    this.pendingAppending++;
+                    this.wfs.trigger(_events2.default.BUFFER_APPENDING, { type: trackName, data: initSegment, parent: 'main' });
+                }
+            }
+        }
+    }, {
+        key: 'onFragParsingData',
+        value: function onFragParsingData(data) {
+            var _this2 = this;
+
+            if (data.type === 'video') {}
+
+            [data.data1, data.data2].forEach(function (buffer) {
+                if (buffer) {
+                    _this2.pendingAppending++;
+                    _this2.wfs.trigger(_events2.default.BUFFER_APPENDING, { type: data.type, data: buffer, parent: 'main' });
+                }
+            });
+        }
+    }]);
+
+    return FlowController;
 }(_eventHandler2.default);
 
 exports.default = FlowController;
@@ -3514,7 +3514,7 @@ exports.default = XhrLoader;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -3548,118 +3548,127 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Wfs = function () {
-  _createClass(Wfs, null, [{
-    key: 'isSupported',
-    value: function isSupported() {
-      return window.MediaSource && typeof window.MediaSource.isTypeSupported === 'function' && window.MediaSource.isTypeSupported('video/mp4; codecs="avc1.42c01f,mp4a.40.2"');
-    }
-  }, {
-    key: 'version',
-    get: function get() {
-      // replaced with browserify-versionify transform
-      return '' + 'v.0.0.0.1';
-    }
-  }, {
-    key: 'Events',
-    get: function get() {
-      return _events2.default;
-    }
-  }, {
-    key: 'DefaultConfig',
-    get: function get() {
-      if (!Wfs.defaultConfig) {
-        Wfs.defaultConfig = {
-          autoStartLoad: true,
-          startPosition: -1,
-          debug: false,
-          fLoader: undefined,
-          loader: _xhrLoader2.default,
-          //loader: FetchLoader,
-          fmp4FileUrl: 'xxxx.mp4',
-          fragLoadingTimeOut: 20000,
-          fragLoadingMaxRetry: 6,
-          fragLoadingRetryDelay: 1000,
-          fragLoadingMaxRetryTimeout: 64000,
-          fragLoadingLoopThreshold: 3,
-          forceKeyFrameOnDiscontinuity: true,
-          appendErrorMaxRetry: 3
+    _createClass(Wfs, null, [{
+        key: 'isSupported',
+        value: function isSupported() {
+            return window.MediaSource && typeof window.MediaSource.isTypeSupported === 'function' && window.MediaSource.isTypeSupported('video/mp4; codecs="avc1.42c01f,mp4a.40.2"');
+        }
+    }, {
+        key: 'version',
+        get: function get() {
+            // replaced with browserify-versionify transform
+            return '' + 'v.0.0.0.1';
+        }
+    }, {
+        key: 'Events',
+        get: function get() {
+            return _events2.default;
+        }
+    }, {
+        key: 'DefaultConfig',
+        get: function get() {
+            if (!Wfs.defaultConfig) {
+                Wfs.defaultConfig = {
+                    autoStartLoad: true,
+                    startPosition: -1,
+                    debug: false,
+                    fLoader: undefined,
+                    loader: _xhrLoader2.default,
+                    //loader: FetchLoader,
+                    fmp4FileUrl: 'xxxx.mp4',
+                    fragLoadingTimeOut: 20000,
+                    fragLoadingMaxRetry: 6,
+                    fragLoadingRetryDelay: 1000,
+                    fragLoadingMaxRetryTimeout: 64000,
+                    fragLoadingLoopThreshold: 3,
+                    forceKeyFrameOnDiscontinuity: true,
+                    appendErrorMaxRetry: 3
+                };
+            }
+            return Wfs.defaultConfig;
+        },
+        set: function set(defaultConfig) {
+            Wfs.defaultConfig = defaultConfig;
+        }
+    }]);
+
+    function Wfs() {
+        var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        _classCallCheck(this, Wfs);
+
+        var defaultConfig = Wfs.DefaultConfig;
+        for (var prop in defaultConfig) {
+            if (prop in config) {
+                continue;
+            }
+            config[prop] = defaultConfig[prop];
+        }
+        this.config = config;
+        // observer setup
+        var observer = this.observer = new _events4.default();
+        observer.trigger = function trigger(event) {
+            for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                data[_key - 1] = arguments[_key];
+            }
+
+            observer.emit.apply(observer, [event, event].concat(data));
         };
-      }
-      return Wfs.defaultConfig;
-    },
-    set: function set(defaultConfig) {
-      Wfs.defaultConfig = defaultConfig;
+
+        observer.off = function off(event) {
+            for (var _len2 = arguments.length, data = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+                data[_key2 - 1] = arguments[_key2];
+            }
+
+            observer.removeListener.apply(observer, [event].concat(data));
+        };
+        this.on = observer.on.bind(observer);
+        this.off = observer.off.bind(observer);
+        this.trigger = observer.trigger.bind(observer);
+
+        this.flowController = new _flowController2.default(this);
+        this.bufferController = new _bufferController2.default(this);
+        //  this.fileLoader = new FileLoader(this);
+        this.websocketLoader = new _websocketLoader2.default(this);
+        this.mediaType = undefined;
     }
-  }]);
 
-  function Wfs() {
-    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    _createClass(Wfs, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.flowController.destroy();
+            this.bufferController.destroy();
+            //   this.fileLoader.destroy();
+            this.websocketLoader.destroy();
+        }
+    }, {
+        key: 'attachMedia',
+        value: function attachMedia(media, websocketName, host) {
+            var channelName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'chX';
+            var mediaType = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'H264Raw';
+            // 'H264Raw' 'FMp4'
+            this.mediaType = mediaType;
+            this.media = media;
+            this.trigger(_events2.default.MEDIA_ATTACHING, {
+                media: media,
+                channelName: channelName,
+                mediaType: mediaType,
+                host: host,
+                websocketName: websocketName
+            });
+        }
+    }, {
+        key: 'attachWebsocket',
+        value: function attachWebsocket(websocket, channelName) {
+            this.trigger(_events2.default.WEBSOCKET_ATTACHING, {
+                websocket: websocket,
+                mediaType: this.mediaType,
+                channelName: channelName
+            });
+        }
+    }]);
 
-    _classCallCheck(this, Wfs);
-
-    var defaultConfig = Wfs.DefaultConfig;
-    for (var prop in defaultConfig) {
-      if (prop in config) {
-        continue;
-      }
-      config[prop] = defaultConfig[prop];
-    }
-    this.config = config;
-    // observer setup
-    var observer = this.observer = new _events4.default();
-    observer.trigger = function trigger(event) {
-      for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        data[_key - 1] = arguments[_key];
-      }
-
-      observer.emit.apply(observer, [event, event].concat(data));
-    };
-
-    observer.off = function off(event) {
-      for (var _len2 = arguments.length, data = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        data[_key2 - 1] = arguments[_key2];
-      }
-
-      observer.removeListener.apply(observer, [event].concat(data));
-    };
-    this.on = observer.on.bind(observer);
-    this.off = observer.off.bind(observer);
-    this.trigger = observer.trigger.bind(observer);
-
-    this.flowController = new _flowController2.default(this);
-    this.bufferController = new _bufferController2.default(this);
-    //  this.fileLoader = new FileLoader(this);
-    this.websocketLoader = new _websocketLoader2.default(this);
-    this.mediaType = undefined;
-  }
-
-  _createClass(Wfs, [{
-    key: 'destroy',
-    value: function destroy() {
-      this.flowController.destroy();
-      this.bufferController.destroy();
-      //   this.fileLoader.destroy();
-      this.websocketLoader.destroy();
-    }
-  }, {
-    key: 'attachMedia',
-    value: function attachMedia(media) {
-      var channelName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'chX';
-      var mediaType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'H264Raw';
-      var websocketName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'play2';
-      // 'H264Raw' 'FMp4'    
-      this.mediaType = mediaType;
-      this.media = media;
-      this.trigger(_events2.default.MEDIA_ATTACHING, { media: media, channelName: channelName, mediaType: mediaType, websocketName: websocketName });
-    }
-  }, {
-    key: 'attachWebsocket',
-    value: function attachWebsocket(websocket, channelName) {
-      this.trigger(_events2.default.WEBSOCKET_ATTACHING, { websocket: websocket, mediaType: this.mediaType, channelName: channelName });
-    }
-  }]);
-
-  return Wfs;
+    return Wfs;
 }();
 
 exports.default = Wfs;

@@ -91,14 +91,15 @@ class Wfs {
         this.websocketLoader.destroy();
     }
 
-    attachMedia(media, websocketName, host, channelName = 'chX', mediaType = 'H264Raw') { // 'H264Raw' 'FMp4'
+    attachMedia(media, websocketName) { // 'H264Raw' 'FMp4'
         this.mediaType = mediaType;
         this.media = media;
+        let channelName = 'chX';
+        let mediaType = 'H264Raw';
         this.trigger(Event.MEDIA_ATTACHING, {
             media: media,
             channelName: channelName,
             mediaType: mediaType,
-            host: host,
             websocketName: websocketName
         });
     }
