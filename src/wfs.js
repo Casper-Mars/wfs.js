@@ -92,10 +92,10 @@ class Wfs {
     }
 
     attachMedia(media, websocketName) { // 'H264Raw' 'FMp4'
-        this.mediaType = mediaType;
-        this.media = media;
         let channelName = 'chX';
         let mediaType = 'H264Raw';
+        this.mediaType = mediaType;
+        this.media = media;
         this.trigger(Event.MEDIA_ATTACHING, {
             media: media,
             channelName: channelName,

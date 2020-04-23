@@ -587,8 +587,9 @@ var FlowController = function (_EventHandler) {
     }, {
         key: 'onMediaAttached',
         value: function onMediaAttached(data) {
-            if (data.websocketName !== undefined && data.host !== undefined) {
-                var client = new WebSocket('ws://' + data.host + '/' + data.websocketName);
+            console.log(data);
+            if (data.websocketName !== undefined) {
+                var client = new WebSocket('ws://' + data.websocketName);
                 this.wfs.attachWebsocket(client, data.channelName);
             } else {
                 console.log('websocketName ERROE!!!');
@@ -1101,8 +1102,14 @@ var h264Demuxer = function (_EventHandler) {
     key: 'onH264DataParsed',
     value: function onH264DataParsed(event) {
       this._parseAVCTrack(event.data);
+      // this.remuxer.pushVideo(0, this.sn, this._avcTrack, this.timeOffset, this.contiguous);
+      // this.sn += 1;
+      // if (this._avcTrack.samples.length >= 20){ // Firefox
+      //   console.log("avcTrack more than 20");
+      // }
       if (this.browserType === 1 || this._avcTrack.samples.length >= 20) {
         // Firefox
+        debugger;
         this.remuxer.pushVideo(0, this.sn, this._avcTrack, this.timeOffset, this.contiguous);
         this.sn += 1;
       }
@@ -1479,6 +1486,7 @@ var EventHandler = function () {
   }, {
     key: 'onEvent',
     value: function onEvent(event, data) {
+
       this.onEventGeneric(event, data);
     }
   }, {
@@ -3643,17 +3651,16 @@ var Wfs = function () {
         }
     }, {
         key: 'attachMedia',
-        value: function attachMedia(media, websocketName, host) {
-            var channelName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'chX';
-            var mediaType = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'H264Raw';
+        value: function attachMedia(media, websocketName) {
             // 'H264Raw' 'FMp4'
+            var channelName = 'chX';
+            var mediaType = 'H264Raw';
             this.mediaType = mediaType;
             this.media = media;
             this.trigger(_events2.default.MEDIA_ATTACHING, {
                 media: media,
                 channelName: channelName,
                 mediaType: mediaType,
-                host: host,
                 websocketName: websocketName
             });
         }

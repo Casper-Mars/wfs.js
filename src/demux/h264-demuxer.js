@@ -42,7 +42,12 @@ class h264Demuxer extends EventHandler {
   }
 
   onH264DataParsed(event){ 
-    this._parseAVCTrack( event.data); 
+    this._parseAVCTrack( event.data);
+    // this.remuxer.pushVideo(0, this.sn, this._avcTrack, this.timeOffset, this.contiguous);
+    // this.sn += 1;
+    // if (this._avcTrack.samples.length >= 20){ // Firefox
+    //   console.log("avcTrack more than 20");
+    // }
     if (this.browserType === 1 || this._avcTrack.samples.length >= 20){ // Firefox
       this.remuxer.pushVideo(0, this.sn, this._avcTrack, this.timeOffset, this.contiguous);
       this.sn += 1;
